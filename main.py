@@ -1,4 +1,4 @@
-import click
+import click as cli
 from enum import Enum
 from dataclasses import dataclass
 
@@ -6,6 +6,11 @@ from dataclasses import dataclass
 class Size(Enum):
     L = 'L'
     XL = 'XL'
+
+class Emoji(Enum):
+    marg = ' 🧀'
+    peper = ' 🍕'
+    haw = ' 🍍'
 
 
 @dataclass
@@ -19,46 +24,40 @@ class Pizza:
     ingredients: list[str]
 
     def dict(self):
-        print('', self.__class__.__name__, sep='\n')
+        print('', self.__class__.__name__, self.emoji)
         print('', *self.ingredients, sep='\n-')
 
     @classmethod
     def content(cls):
-        # __name__ встроенное поле любого класса
-        # pizzas = [subcls.__name__ for subcls in Pizza.__subclasses__()]
         for subcls in cls.__subclasses__():
             a = subcls(Size.L)
-            print(f'{subcls.__name__}: {a.ingredients}')
-        # if pizza in Pizza.__subclasses__():
-        #     menu.update({pizza.__name__: pizza.ingredients})
-        # print(pizzas)
+            print(f'- {subcls.__name__}{a.emoji}:', sep='', end=' ')
+            print(*a.ingredients, sep=', ')
 
 
 class Margherita(Pizza):
 
     def __init__(self, size: Size):
+        self.emoji = ' 🧀'
         self.ingredients = ['tomato sauce', 'mozzarella', 'tomatoes']
         super().__init__(size, self.ingredients)
-        self.__class__.__name__ += ' 🧀'
 
 
 class Pepperoni(Pizza):
 
     def __init__(self, size: Size):
+        self.emoji = ' 🍕'
         self.ingredients = ['tomato sauce', 'mozzarella', 'pepperoni']
         super().__init__(size, self.ingredients)
-        self.__class__.__name__ += ' 🍕'
 
 
 class Hawaiian(Pizza):
 
     def __init__(self, size: Size):
+        self.emoji = ' 🍍'
         self.ingredients = ['tomato sauce', 'mozzarella', 'chicken',
                             'pineapples']
         super().__init__(size, self.ingredients)
-        self.__class__.__name__ += ' 🍍'
-
-
 
 
 # @click.group()
@@ -74,22 +73,21 @@ class Hawaiian(Pizza):
 #
 #
 #
-# @cli.command()
-# def menu():
-#     """Выводит меню"""
-
-import inspect
-
+@cli.command()
+def menu():
+    """Выводит меню"""
+    Pizza.content()
 
 
 if __name__ == '__main__':
+
     a = Margherita(Size.L)
-    a.dict()
-    b = Pepperoni(Size.XL)
-    b.dict()
+    k = Margherita(Size.L)
+    b = Pepperoni(Size.L)
     c = Hawaiian(Size.L)
-    c.dict()
-    print(b == c)
+    a.dict()
+    print(k == a)
     # print(Pizza.__subclasses__())
-    Pizza.content()
+    # Pizza.content()
+    menu()
 
