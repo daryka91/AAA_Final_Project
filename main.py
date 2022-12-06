@@ -12,6 +12,7 @@ class Size(Enum):
 # Нам не нужно определять методы __eq__,
 # потому что декоратор dataclass автоматически добавляет их в определение
 # класса при вызове с order = True
+# _DataclassParams(init=True,repr=True,eq=True,order=False,unsafe_hash=False,frozen=False) - default
 class Pizza:
     """Parent class"""
     size: Size
@@ -20,6 +21,17 @@ class Pizza:
     def dict(self):
         print('', self.__class__.__name__, sep='\n')
         print('', *self.ingredients, sep='\n-')
+
+    @classmethod
+    def content(cls):
+        # __name__ встроенное поле любого класса
+        # pizzas = [subcls.__name__ for subcls in Pizza.__subclasses__()]
+        for subcls in cls.__subclasses__():
+            a = subcls(Size.L)
+            print(f'{subcls.__name__}: {a.ingredients}')
+        # if pizza in Pizza.__subclasses__():
+        #     menu.update({pizza.__name__: pizza.ingredients})
+        # print(pizzas)
 
 
 class Margherita(Pizza):
@@ -47,6 +59,8 @@ class Hawaiian(Pizza):
         self.__class__.__name__ += ' 🍍'
 
 
+
+
 # @click.group()
 # def cli():
 #     pass
@@ -57,12 +71,16 @@ class Hawaiian(Pizza):
 # @click.argument('pizza', nargs=1)
 # def order(pizza: str, delivery: bool):
 #     """Готовит и доставляет пиццу"""
-#     pass
+#
+#
 #
 # @cli.command()
 # def menu():
 #     """Выводит меню"""
-#     pass
+
+import inspect
+
+
 
 if __name__ == '__main__':
     a = Margherita(Size.L)
@@ -72,3 +90,6 @@ if __name__ == '__main__':
     c = Hawaiian(Size.L)
     c.dict()
     print(b == c)
+    # print(Pizza.__subclasses__())
+    Pizza.content()
+
