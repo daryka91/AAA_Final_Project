@@ -1,16 +1,30 @@
+import click
 import click as cli
 from enum import Enum
 from dataclasses import dataclass
+import random
 
 
 class Size(Enum):
     L = 'L'
     XL = 'XL'
 
+
 class Emoji(Enum):
     marg = ' 🧀'
     peper = ' 🍕'
     haw = ' 🍍'
+
+
+def log(function):
+    def wrapper(*args, **kwargs):
+        beg = 2
+        end = 10
+        random_order_time = random.randint(beg, end)
+        name = function.__name__
+        print(f'{name} - {random_order_time}c!')
+
+    return wrapper
 
 
 @dataclass
@@ -30,9 +44,27 @@ class Pizza:
     @classmethod
     def content(cls):
         for subcls in cls.__subclasses__():
-            a = subcls(Size.L)
+            a = subcls(Size)
             print(f'- {subcls.__name__}{a.emoji}:', sep='', end=' ')
             print(*a.ingredients, sep=', ')
+
+    @log
+    @classmethod
+    def bake(cls):
+        pizza = cls
+        # pizza: Pizza.__class__
+        beg = 1
+        end = 10
+        random_order_time = random.randint(beg, end)
+        print(f'👨‍🍳Приготовили за {random_order_time}c!')
+
+    @classmethod
+    def delivery(cls):
+        pizza = cls
+        beg = 1
+        end = 10
+        random_order_time = random.randint(beg, end)
+        print(f'🎠 Доставили за {random_order_time}c!')
 
 
 class Margherita(Pizza):
@@ -60,34 +92,13 @@ class Hawaiian(Pizza):
         super().__init__(size, self.ingredients)
 
 
-# @click.group()
-# def cli():
-#     pass
-#
-#
-# @cli.command()
-# @click.option(' =delivery', default=False, is_flag=True)
-# @click.argument('pizza', nargs=1)
-# def order(pizza: str, delivery: bool):
-#     """Готовит и доставляет пиццу"""
-#
-#
-#
-@cli.command()
-def menu():
-    """Выводит меню"""
-    Pizza.content()
-
-
 if __name__ == '__main__':
-
     a = Margherita(Size.L)
     k = Margherita(Size.L)
     b = Pepperoni(Size.L)
     c = Hawaiian(Size.L)
-    a.dict()
+    # Pizza.dict(Pizza)
     print(k == a)
-    # print(Pizza.__subclasses__())
-    # Pizza.content()
-    menu()
-
+    Pizza.content()
+    Pizza.bake()
+    Pizza.delivery()
