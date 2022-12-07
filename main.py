@@ -10,12 +10,6 @@ class Size(Enum):
     XL = 'XL'
 
 
-class Emoji(Enum):
-    marg = ' 🧀'
-    peper = ' 🍕'
-    haw = ' 🍍'
-
-
 def log(function):
     def wrapper(*args, **kwargs):
         beg = 2
