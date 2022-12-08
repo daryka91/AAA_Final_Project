@@ -91,7 +91,6 @@ if __name__ == '__main__':
     k = Margherita(Size.L)
     b = Pepperoni(Size.L)
     c = Hawaiian(Size.L)
-    # Pizza.dict(Pizza)
     print(k == a)
     Pizza.content()
     Pizza.bake()
