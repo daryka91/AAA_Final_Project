@@ -1,4 +1,4 @@
-from main import Pizza
+from pizza import Pizza
 import click
 
 
