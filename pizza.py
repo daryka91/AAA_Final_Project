@@ -1,5 +1,3 @@
-import click
-import click as cli
 from enum import Enum
 from dataclasses import dataclass
 import random
@@ -31,10 +29,6 @@ def log(func=None, description=None):
 
 
 @dataclass
-# Нам не нужно определять методы __eq__, потому что декоратор dataclass
-# автоматически добавляет их в определение класса при вызове с order = True
-# _DataclassParams(init=True,repr=True,eq=True,order=False,
-#                  unsafe_hash=False,frozen=False) - default
 class Pizza:
     """Parent class"""
     size: Size
@@ -51,23 +45,20 @@ class Pizza:
             print(f'- {subcls.__name__}{a.emoji}:', sep='', end=' ')
             print(*a.ingredients, sep=', ')
 
-    @log
+    @log(description='🥘 Приготовили за {} c!')
     @classmethod
     def bake(cls):
         """Выпекаем пиццу"""
-        pass
 
     @log(description='🛺 Доставили за {} c!')
     @classmethod
     def delivery(cls):
         """Доставка пиццы"""
-        pass
 
-    @log(description='🏡 Забрали за {} c!')
+    @log
     @classmethod
     def pickup(cls):
         """Самовывоз пиццы"""
-        pass
 
 
 class Margherita(Pizza):
@@ -96,7 +87,7 @@ class Hawaiian(Pizza):
 
 
 if __name__ == '__main__':
-    b = Pepperoni()
+    b = Pepperoni(Size.XL)
     c = Hawaiian()
     print(b == c)
     Pizza.content()
@@ -104,5 +95,3 @@ if __name__ == '__main__':
     Pizza.delivery()
     Pizza.pickup()
     c.dict()
-
-

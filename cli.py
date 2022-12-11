@@ -16,12 +16,11 @@ def cli():
 @cli.command()
 def menu():
     """Выводит меню"""
-    menu = Pizza.content()
-    click.echo(menu)
+    Pizza.content()
 
 
 @cli.command()
-@click.option('--delivery', default=False, is_flag=True)
+@click.option('--delivery', '-d', default=False, is_flag=True)
 @click.argument('pizza', nargs=1)
 def order(pizza: str, delivery: bool):
     """Готовит и доставляет пиццу
