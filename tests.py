@@ -1,5 +1,4 @@
 import pizza
-import cli
 from cli import order, menu
 from click.testing import CliRunner
 
@@ -52,32 +51,26 @@ def test_pizza_dict(capsys):
     assert ' Hawaiian  🍍 -tomato sauce -mozzarella -chicken -pineapples'
 
 
-def test_pizza_order(capsys):
-    cli.pizza_order('pepperoni', False)
-    out, err = capsys.readouterr()
-    assert '🥘 Приготовили за ' in out
-
-
-def test_pizza_order_delivery(capsys):
-    cli.pizza_order('pepperoni', True)
-    out, err = capsys.readouterr()
-    assert '🛺 Доставили за' in out
-
-
 def test_pickup(capsys):
     pizza.Pizza.pickup()
     out, err = capsys.readouterr()
     assert 'pickup -' in out
 
 
-def test_order():
+def test_click_order_delivery():
     runner = CliRunner()
     result = runner.invoke(order, ['pepperoni', '-d'])
     assert '🥘 Приготовили за' in result.output
     assert '🛺 Доставили за' in result.output
 
 
-def test_menu():
+def test_click_order():
+    runner = CliRunner()
+    result = runner.invoke(order, ['pepperoni'])
+    assert '🥘 Приготовили за' in result.output
+
+
+def test_click_menu():
     runner = CliRunner()
     result = runner.invoke(menu)
     assert '- Margherita 🧀: tomato sauce, mozzarella, tomatoes' in result.output

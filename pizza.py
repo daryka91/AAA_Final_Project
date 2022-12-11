@@ -5,11 +5,21 @@ from functools import wraps, partial
 
 
 class Size(Enum):
+    """
+    Отдельный класс для размера, чтобы не ошибиться при написании и
+    иметь возможность легко добавлять новые размеры
+    """
     L = 'L'
     XL = 'XL'
 
 
 def log(func=None, description=None):
+    """
+    Декоратор, который выводит имя функции и время выполнения, в нашем случае
+    это просто случайное число в диапазоне от beg до end.
+    Также декоратор может принимать шаблон (description), в который
+    подставляет время
+    """
     description_list = []
     if func is None:
         return partial(log, description=description)
@@ -30,16 +40,20 @@ def log(func=None, description=None):
 
 @dataclass
 class Pizza:
-    """Parent class"""
+    """
+    Родительский класс для любой новой пиццы, благодаря тому, что есть
+    декоратор @dataclass, автоматически создается метод __eq__ для сравнения
+    двух пицц
+    """
     size: Size
     ingredients: list[str]
 
-    def dict(self) -> None:
-        print('', self.__class__.__name__, self.emoji)
-        print('', *self.ingredients, sep='\n-')
-
     @classmethod
     def content(cls):
+        """
+        Метод родительского класса, благодаря которому в меню кафе будут
+        автоматически добавляться новые виды пицц при их создании
+        """
         for subcls in cls.__subclasses__():
             a = subcls()
             print(f'- {subcls.__name__}{a.emoji}:', sep='', end=' ')
@@ -59,6 +73,13 @@ class Pizza:
     @classmethod
     def pickup(cls):
         """Самовывоз пиццы"""
+
+    def dict(self) -> None:
+        """
+        Выводит веселенький рецепт конкретной пиццы
+        """
+        print('', self.__class__.__name__, self.emoji)
+        print('', *self.ingredients, sep='\n-')
 
 
 class Margherita(Pizza):

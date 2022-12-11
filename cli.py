@@ -2,12 +2,6 @@ from pizza import Pizza
 import click
 
 
-def pizza_order(pizza: str, delivery: bool):
-    Pizza.bake()
-    if delivery:
-        Pizza.delivery()
-
-
 @click.group()
 def cli():
     pass
@@ -24,12 +18,14 @@ def menu():
 @click.argument('pizza', nargs=1)
 def order(pizza: str, delivery: bool):
     """Готовит и доставляет пиццу
-    Есть пицца трех видов:
+    Вы можете заказать пиццу трех видов:
     1. pepperoni
     2. margherita
     3. hawaiian
     """
-    pizza_order(pizza, delivery)
+    Pizza.bake()
+    if delivery:
+        Pizza.delivery()
 
 
 if __name__ == '__main__':
